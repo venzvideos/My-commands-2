@@ -1,135 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Command Accessor — Vince Amigo</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Cheats | Developer Reference</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
-
+    :root {
+      --primary: #3b82f6;
+      --accent: #60a5fa;
+      --bg: #0f172a;
+      --sidebar: #1e2937;
+      --card: #1e2937;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.18), transparent 60%),
-                  #0a0a0f;
-      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: #e2e8f0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
     }
-
-    .glass {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.2);
+    .sidebar {
+      width: 280px;
+      background: var(--sidebar);
+      border-right: 1px solid #334155;
+      padding: 24px;
+      overflow-y: auto;
     }
-
-    .module {
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    .logo {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 40px;
+      letter-spacing: 0.5px;
     }
-    .module.active {
-      background: rgba(34, 211, 238, 0.18);
-      border: 1px solid #22d3ee;
-      box-shadow: 0 0 35px rgba(34, 211, 238, 0.5);
-      color: #67e8f9;
+    .nav-item {
+      padding: 14px 20px;
+      margin: 6px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-
-    .glow-btn {
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    .nav-item:hover {
+      background: #334155;
     }
-    .glow-btn:hover {
-      box-shadow: 0 0 30px #22d3ee;
-      transform: translateY(-2px);
+    .nav-item.active {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+    }
+    .main {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+    header {
+      margin-bottom: 40px;
+    }
+    h1 {
+      font-size: 2.1rem;
+      color: white;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+    .search {
+      width: 100%;
+      max-width: 500px;
+      padding: 14px 20px;
+      background: #1e2937;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 40px;
+    }
+    .section {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 32px;
+      border: 1px solid #334155;
+    }
+    .section h2 {
+      color: #e0f2fe;
+      font-size: 1.5rem;
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #334155;
+    }
+    .command-box {
+      background: #0f172a;
+      padding: 18px;
+      border-radius: 10px;
+      margin: 14px 0;
+      position: relative;
+      border-left: 4px solid var(--primary);
+      font-family: 'Consolas', 'Courier New', monospace;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #1e40af;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .copy-btn:hover {
+      background: #2563eb;
+    }
+    pre {
+      white-space: pre-wrap;
+      font-size: 1.02rem;
+      line-height: 1.5;
     }
   </style>
 </head>
-<body class="flex items-center justify-center p-8">
-  <div class="max-w-7xl w-full">
-    <div class="text-center mb-12">
-      <p class="text-purple-400 tracking-[4px] text-sm font-medium">CREATED BY VINCE AMIGO</p>
-      <h1 class="text-6xl font-bold tracking-tighter text-white">Command Accessor</h1>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">COMMAND CHEATS</div>
+    
+    <div class="nav-item active" onclick="setActive(this); filterCategory('all')">
+      <i class="fas fa-th-list"></i> All Commands
+    </div>
+    <div class="nav-item" onclick="setActive(this); filterCategory('flutter')">
+      <i class="fab fa-flutter"></i> Flutter
+    </div>
+    <div class="nav-item" onclick="setActive(this); filterCategory('laravel')">
+      <i class="fab fa-laravel"></i> Laravel
+    </div>
+    <div class="nav-item" onclick="setActive(this); filterCategory('dart')">
+      <i class="fas fa-code"></i> Dart
+    </div>
+    <div class="nav-item" onclick="setActive(this); filterCategory('react')">
+      <i class="fab fa-react"></i> React
+    </div>
+    <div class="nav-item" onclick="setActive(this); filterCategory('node')">
+      <i class="fab fa-node-js"></i> Node.js
+    </div>
+    <div class="nav-item" onclick="setActive(this); filterCategory('python')">
+      <i class="fab fa-python"></i> Python
+    </div>
+    <div class="nav-item" onclick="setActive(this); filterCategory('general')">
+      <i class="fas fa-tools"></i> General
+    </div>
+  </div>
+
+  <div class="main">
+    <header>
+      <h1>Command Cheats</h1>
+      <p class="subtitle">Professional Developer Command Reference</p>
+    </header>
+
+    <input type="text" class="search" id="search" placeholder="Search commands..." onkeyup="searchCommands()">
+
+    <!-- Flutter -->
+    <div class="section" id="flutter">
+      <h2>Flutter</h2>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Access Existing Project</strong><br>
+        <pre>cd C:\Users\USER\third_year_first_sem\Flutter\test_app
+flutter run</pre>
+      </div>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Create New Project</strong><br>
+        <pre>cd C:\Users\USER\third_year_first_sem\Flutter
+flutter create my_first_app
+cd my_first_app
+flutter run</pre>
+      </div>
     </div>
 
-    <div class="flex gap-8">
-      <!-- Sidebar -->
-      <div class="w-80 glass rounded-3xl p-8">
-        <h2 class="text-purple-400 text-xs tracking-widest mb-8">SELECT MODULE</h2>
-        
-        <div onclick="switchModule(0)" class="module active px-6 py-5 rounded-2xl cursor-pointer mb-3 flex items-center gap-4 border border-transparent">
-          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
-          <span class="font-semibold text-lg">Dart</span>
-        </div>
-        <div onclick="switchModule(1)" class="module px-6 py-5 rounded-2xl cursor-pointer mb-3 flex items-center gap-4 border border-transparent">
-          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
-          <span class="font-semibold text-lg">Flutter</span>
-        </div>
-        <div onclick="switchModule(2)" class="module px-6 py-5 rounded-2xl cursor-pointer mb-3 flex items-center gap-4 border border-transparent">
-          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
-          <span class="font-semibold text-lg">JSX / React</span>
-        </div>
-        <div onclick="switchModule(3)" class="module px-6 py-5 rounded-2xl cursor-pointer flex items-center gap-4 border border-transparent">
-          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
-          <span class="font-semibold text-lg">Arcade</span>
-        </div>
+    <!-- Laravel -->
+    <div class="section" id="laravel">
+      <h2>Laravel</h2>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Access Existing Project</strong><br>
+        <pre>cd C:\Users\USER\third_year_first_sem\Laravel\first_project
+php artisan serve</pre>
       </div>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Create New Project</strong><br>
+        <pre>cd C:\Users\USER\third_year_first_sem\Laravel
+laravel new my_project
+cd my_project
+php artisan migrate
+php artisan serve</pre>
+      </div>
+    </div>
 
-      <!-- Main Panel -->
-      <div class="flex-1 glass rounded-3xl p-10" id="main-panel"></div>
+    <!-- Dart -->
+    <div class="section" id="dart">
+      <h2>Dart</h2>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Run Project</strong><br>
+        <pre>cd C:\Users\USER\third_year_first_sem\Dart\russ_test
+dart run</pre>
+      </div>
+    </div>
+
+    <!-- React -->
+    <div class="section" id="react">
+      <h2>React</h2>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Access Existing Project</strong><br>
+        <pre>cd C:\Users\USER\third_year_first_sem\React\russ_react_portfolio
+npm run dev</pre>
+      </div>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Create New Project</strong><br>
+        <pre>cd C:\Users\USER\third_year_first_sem\React
+npm create vite@latest my_project -- --template react
+cd my_project
+npm install
+npm run dev</pre>
+      </div>
+    </div>
+
+    <!-- Node.js -->
+    <div class="section" id="node">
+      <h2>Node.js</h2>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Common Commands</strong><br>
+        <pre>npm run dev
+npm install
+node --version</pre>
+      </div>
+    </div>
+
+    <!-- Python -->
+    <div class="section" id="python">
+      <h2>Python</h2>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <strong>Django</strong><br>
+        <pre>python manage.py runserver</pre>
+      </div>
+    </div>
+
+    <!-- General -->
+    <div class="section" id="general">
+      <h2>General Tools</h2>
+      <div class="command-box">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre>git status
+git add .
+git commit -m "update"
+git push
+code .</pre>
+      </div>
     </div>
   </div>
 
   <script>
-    const data = [
-      {name: "Dart", cmds: ["dart --version", "dart run main.dart", "dart format .", "dart analyze"]},
-      {name: "Flutter", cmds: ["flutter doctor", "flutter pub get", "flutter run", "flutter build apk"]},
-      {name: "JSX / React", cmds: ["npm install", "npm run dev", "npm start", "npm run build"]},
-      {name: "Arcade", cmds: ["arcade start", "arcade deploy"]}
-    ];
+    function setActive(el) {
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+    }
 
-    function switchModule(n) {
-      const mod = data[n];
-      let html = `
-        <div class="flex justify-between items-center mb-10">
-          <h2 class="text-5xl font-bold text-cyan-300">${mod.name}</h2>
-          <div class="flex gap-4">
-            <button onclick="copyAll(${n})" class="glow-btn px-8 py-4 border border-cyan-400 text-cyan-400 rounded-2xl font-semibold">COPY ALL</button>
-            <button onclick="alert('More documentation coming soon!')" class="glow-btn px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 rounded-2xl font-semibold">VIEW INFO</button>
-          </div>
-        </div>
-      `;
+    function copyCode(btn) {
+      const text = btn.parentElement.querySelector('pre').innerText;
+      navigator.clipboard.writeText(text);
+      const orig = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
 
-      mod.cmds.forEach(cmd => {
-        html += `
-          <div class="bg-zinc-900/70 border border-zinc-700 hover:border-cyan-400 rounded-3xl p-8 flex justify-between items-center mb-6 transition-all">
-            <code class="text-xl font-mono text-cyan-100">${cmd}</code>
-            <button onclick="copy('${cmd}')" class="glow-btn px-10 py-4 border-2 border-cyan-400 text-cyan-400 rounded-2xl font-bold hover:bg-cyan-400 hover:text-black">COPY</button>
-          </div>
-        `;
+    function searchCommands() {
+      const term = document.getElementById('search').value.toLowerCase();
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.style.display = sec.textContent.toLowerCase().includes(term) ? 'block' : 'none';
       });
-
-      document.getElementById("main-panel").innerHTML = html;
-
-      document.querySelectorAll('.module').forEach((el,i) => el.classList.toggle('active', i===n));
     }
 
-    function copy(text) {
-      navigator.clipboard.writeText(text);
-      showToast("✅ Copied!");
+    function filterCategory(cat) {
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.style.display = (cat === 'all' || sec.id === cat) ? 'block' : 'none';
+      });
     }
-
-    function copyAll(n) {
-      const text = data[n].cmds.join('\n');
-      navigator.clipboard.writeText(text);
-      showToast("✅ All commands copied!");
-    }
-
-    function showToast(msg) {
-      const t = document.createElement('div');
-      t.textContent = msg;
-      t.style.cssText = `position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#22d3ee; color:#000; padding:16px 32px; border-radius:9999px; font-weight:700;`;
-      document.body.appendChild(t);
-      setTimeout(() => t.remove(), 1600);
-    }
-
-    window.onload = () => switchModule(0);
   </script>
 </body>
 </html>
