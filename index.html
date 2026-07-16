@@ -338,9 +338,175 @@
     .logo{display:none;}
     .main{padding:28px 20px 60px;}
   }
+
+  /* Intro screen */
+  #intro{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(0,229,199,0.10), transparent 42%),
+      radial-gradient(circle at 82% 78%, rgba(97,218,251,0.08), transparent 45%),
+      var(--bg-0);
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  #intro.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+
+  .intro-card{
+    width:min(560px, 88vw);
+    padding:48px 44px 40px;
+    border-radius:20px;
+    background:var(--glass);
+    backdrop-filter:blur(20px);
+    border:1px solid var(--border);
+    text-align:center;
+    animation:introRise .7s ease both;
+  }
+  @keyframes introRise{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .intro-terminal{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 14px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:var(--glass-strong);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-2);
+    margin-bottom:26px;
+  }
+  .intro-terminal .blink{
+    color:var(--accent);
+    animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .intro-logo{
+    width:64px; height:64px;
+    margin:0 auto 22px;
+    border-radius:16px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--glass-strong);
+    border:1px solid var(--border-strong);
+    box-shadow:0 0 30px rgba(0,229,199,0.18);
+  }
+
+  .intro-title{
+    font-size:32px;
+    font-weight:800;
+    letter-spacing:-0.5px;
+    margin:0 0 12px;
+    line-height:1.2;
+  }
+  .intro-title span{
+    background:linear-gradient(120deg,#fff, var(--accent) 130%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .intro-sub{
+    color:var(--text-2);
+    font-size:14.5px;
+    line-height:1.6;
+    max-width:420px;
+    margin:0 auto 32px;
+  }
+
+  .intro-stats{
+    display:flex;
+    justify-content:center;
+    gap:22px;
+    margin-bottom:34px;
+    flex-wrap:wrap;
+  }
+  .intro-stat{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    color:var(--text-3);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .intro-stat .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 6px currentColor;
+  }
+
+  .run-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:15px 34px;
+    border-radius:12px;
+    background:rgba(0,229,199,0.1);
+    border:1px solid rgba(0,229,199,0.45);
+    color:var(--accent);
+    font-family:'JetBrains Mono', monospace;
+    font-size:14.5px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    cursor:pointer;
+    transition:all .22s ease;
+    box-shadow:0 0 20px rgba(0,229,199,0.18);
+  }
+  .run-btn:hover{
+    background:rgba(0,229,199,0.18);
+    border-color:rgba(0,229,199,0.75);
+    box-shadow:0 0 12px rgba(0,229,199,0.55), 0 0 40px rgba(0,229,199,0.3);
+    transform:translateY(-1px);
+  }
+  .run-btn:active{ transform:translateY(0); }
+  .run-btn svg{ transition:transform .22s ease; }
+  .run-btn:hover svg{ transform:translateX(3px); }
+
+  #app{
+    transition:opacity .5s ease;
+  }
+  #app.app-hidden{
+    opacity:0;
+    pointer-events:none;
+    height:0;
+    overflow:hidden;
+  }
 </style>
 </head>
 <body>
+
+<div id="intro">
+  <div class="intro-card">
+    <div class="intro-logo">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M13.5 6l-3 12" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <h1 class="intro-title">Welcome to <span>Command Accessor</span></h1>
+    <p class="intro-sub">A tool that helps you access the cmd faster — every project command, one click away.</p>
+
+    <div class="intro-stats">
+      <span class="intro-stat" style="color:var(--flutter)"><span class="dot"></span>Flutter</span>
+      <span class="intro-stat" style="color:var(--laravel)"><span class="dot"></span>Laravel</span>
+      <span class="intro-stat" style="color:var(--dart)"><span class="dot"></span>Dart</span>
+      <span class="intro-stat" style="color:var(--react)"><span class="dot"></span>React</span>
+      <span class="intro-stat" style="color:var(--node)"><span class="dot"></span>Node</span>
+      <span class="intro-stat" style="color:var(--python)"><span class="dot"></span>Python</span>
+    </div>
+
+    <button class="run-btn" id="runBtn">
+      Run
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<div id="app" class="app-hidden">
 
 <nav class="sidebar" id="sidebar">
   <div class="logo">COMMAND<br>CHEATS</div>
@@ -563,6 +729,8 @@
   </section>
 </main>
 
+</div>
+
 <script>
   // Copy to clipboard
   function fallbackCopy(text){
@@ -645,6 +813,16 @@
       if(catHasVisible) anyVisible = true;
     });
     noResults.style.display = anyVisible ? 'none' : 'block';
+  });
+
+  // Intro screen dismissal
+  const introEl = document.getElementById('intro');
+  const appEl = document.getElementById('app');
+  const runBtn = document.getElementById('runBtn');
+  runBtn.addEventListener('click', ()=>{
+    introEl.classList.add('hide');
+    appEl.classList.remove('app-hidden');
+    setTimeout(()=>{ introEl.style.display = 'none'; }, 520);
   });
 </script>
 
