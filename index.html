@@ -3,178 +3,132 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Command Accessor • by Vince Amigo</title>
+  <title>Command Accessor — Vince Amigo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
 
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 100%);
+      background: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.18), transparent 60%),
+                  #0a0a0f;
+      min-height: 100vh;
     }
-    .title-font { font-family: 'Space Grotesk', sans-serif; }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
 
     .module {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
     .module.active {
-      background: rgba(34, 211, 238, 0.15);
-      border-color: #22d3ee;
-      box-shadow: 0 0 25px rgba(34, 211, 238, 0.4);
+      background: rgba(34, 211, 238, 0.18);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 35px rgba(34, 211, 238, 0.5);
+      color: #67e8f9;
     }
-    .glass {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .glow-btn {
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 30px #22d3ee;
+      transform: translateY(-2px);
     }
   </style>
 </head>
-<body class="min-h-screen text-white flex items-center justify-center p-6">
+<body class="flex items-center justify-center p-8">
   <div class="max-w-7xl w-full">
-    <!-- Header -->
-    <div class="text-center mb-8">
-      <p class="text-purple-400 text-sm tracking-[3px] font-medium">CREATED BY VINCE AMIGO</p>
-      <h1 class="title-font text-5xl font-semibold tracking-tighter mt-2">Command Accessor</h1>
+    <div class="text-center mb-12">
+      <p class="text-purple-400 tracking-[4px] text-sm font-medium">CREATED BY VINCE AMIGO</p>
+      <h1 class="text-6xl font-bold tracking-tighter text-white">Command Accessor</h1>
     </div>
 
-    <div class="flex gap-6">
+    <div class="flex gap-8">
       <!-- Sidebar -->
-      <div class="w-72 glass rounded-3xl p-6 h-fit">
-        <h2 class="text-purple-400 text-xs tracking-widest mb-5 pl-3">SELECT MODULE</h2>
+      <div class="w-80 glass rounded-3xl p-8">
+        <h2 class="text-purple-400 text-xs tracking-widest mb-8">SELECT MODULE</h2>
         
-        <div onclick="switchModule(0)" class="module active flex items-center gap-3 px-5 py-4 rounded-2xl cursor-pointer mb-2">
-          <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-          <span class="font-medium">Dart</span>
+        <div onclick="switchModule(0)" class="module active px-6 py-5 rounded-2xl cursor-pointer mb-3 flex items-center gap-4 border border-transparent">
+          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
+          <span class="font-semibold text-lg">Dart</span>
         </div>
-        <div onclick="switchModule(1)" class="module flex items-center gap-3 px-5 py-4 rounded-2xl cursor-pointer mb-2">
-          <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-          <span class="font-medium">Flutter</span>
+        <div onclick="switchModule(1)" class="module px-6 py-5 rounded-2xl cursor-pointer mb-3 flex items-center gap-4 border border-transparent">
+          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
+          <span class="font-semibold text-lg">Flutter</span>
         </div>
-        <div onclick="switchModule(2)" class="module flex items-center gap-3 px-5 py-4 rounded-2xl cursor-pointer mb-2">
-          <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-          <span class="font-medium">JSX / React</span>
+        <div onclick="switchModule(2)" class="module px-6 py-5 rounded-2xl cursor-pointer mb-3 flex items-center gap-4 border border-transparent">
+          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
+          <span class="font-semibold text-lg">JSX / React</span>
         </div>
-        <div onclick="switchModule(3)" class="module flex items-center gap-3 px-5 py-4 rounded-2xl cursor-pointer">
-          <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
-          <span class="font-medium">Arcade</span>
+        <div onclick="switchModule(3)" class="module px-6 py-5 rounded-2xl cursor-pointer flex items-center gap-4 border border-transparent">
+          <div class="w-3 h-3 bg-cyan-400 rounded-full"></div>
+          <span class="font-semibold text-lg">Arcade</span>
         </div>
       </div>
 
       <!-- Main Panel -->
-      <div class="flex-1 glass rounded-3xl p-8" id="main-panel">
-        <!-- Content will be injected by JavaScript -->
-      </div>
+      <div class="flex-1 glass rounded-3xl p-10" id="main-panel"></div>
     </div>
   </div>
 
   <script>
-    const modules = [
-      {
-        name: "Dart",
-        commands: [
-          { cmd: "dart --version", label: "Check Version" },
-          { cmd: "dart run main.dart", label: "Run Project" },
-          { cmd: "dart format .", label: "Format Code" },
-          { cmd: "dart analyze", label: "Analyze" }
-        ]
-      },
-      {
-        name: "Flutter",
-        commands: [
-          { cmd: "flutter doctor", label: "Health Check" },
-          { cmd: "flutter pub get", label: "Get Packages" },
-          { cmd: "flutter run", label: "Run App" },
-          { cmd: "flutter build apk", label: "Build APK" }
-        ]
-      },
-      {
-        name: "JSX / React",
-        commands: [
-          { cmd: "npm install", label: "Install Dependencies" },
-          { cmd: "npm run dev", label: "Start Dev Server" },
-          { cmd: "npm start", label: "Start Production" },
-          { cmd: "npm run build", label: "Build Project" }
-        ]
-      },
-      {
-        name: "Arcade",
-        commands: [
-          { cmd: "arcade start", label: "Start Arcade" },
-          { cmd: "arcade deploy", label: "Deploy" }
-        ]
-      }
+    const data = [
+      {name: "Dart", cmds: ["dart --version", "dart run main.dart", "dart format .", "dart analyze"]},
+      {name: "Flutter", cmds: ["flutter doctor", "flutter pub get", "flutter run", "flutter build apk"]},
+      {name: "JSX / React", cmds: ["npm install", "npm run dev", "npm start", "npm run build"]},
+      {name: "Arcade", cmds: ["arcade start", "arcade deploy"]}
     ];
 
-    function switchModule(index) {
-      const panel = document.getElementById('main-panel');
-      const mod = modules[index];
-
+    function switchModule(n) {
+      const mod = data[n];
       let html = `
-        <div class="flex justify-between items-center mb-8">
-          <h2 class="text-3xl font-semibold tracking-tight text-cyan-300">${mod.name}</h2>
-          <div class="flex gap-3">
-            <button onclick="copyAll(${index})" 
-                    class="px-6 py-3 border border-cyan-400 text-cyan-400 rounded-2xl hover:bg-cyan-400 hover:text-black transition-all font-semibold">
-              COPY ALL
-            </button>
-            <button onclick="alert('More info coming soon!')" 
-                    class="px-6 py-3 bg-purple-600 hover:bg-purple-500 rounded-2xl transition-all font-semibold">
-              VIEW INFO
-            </button>
+        <div class="flex justify-between items-center mb-10">
+          <h2 class="text-5xl font-bold text-cyan-300">${mod.name}</h2>
+          <div class="flex gap-4">
+            <button onclick="copyAll(${n})" class="glow-btn px-8 py-4 border border-cyan-400 text-cyan-400 rounded-2xl font-semibold">COPY ALL</button>
+            <button onclick="alert('More documentation coming soon!')" class="glow-btn px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 rounded-2xl font-semibold">VIEW INFO</button>
           </div>
         </div>
-
-        <div class="space-y-4">
       `;
 
-      mod.commands.forEach(item => {
+      mod.cmds.forEach(cmd => {
         html += `
-          <div class="group bg-zinc-900/80 border border-zinc-700 hover:border-cyan-500 rounded-2xl p-6 flex justify-between items-center transition-all">
-            <div>
-              <code class="text-cyan-300 text-lg">${item.cmd}</code>
-            </div>
-            <button onclick="copyCommand('${item.cmd}')" 
-                    class="px-8 py-3 bg-transparent border-2 border-cyan-400 text-cyan-400 rounded-xl hover:bg-cyan-400 hover:text-black font-bold transition-all">
-              COPY
-            </button>
+          <div class="bg-zinc-900/70 border border-zinc-700 hover:border-cyan-400 rounded-3xl p-8 flex justify-between items-center mb-6 transition-all">
+            <code class="text-xl font-mono text-cyan-100">${cmd}</code>
+            <button onclick="copy('${cmd}')" class="glow-btn px-10 py-4 border-2 border-cyan-400 text-cyan-400 rounded-2xl font-bold hover:bg-cyan-400 hover:text-black">COPY</button>
           </div>
         `;
       });
 
-      html += `</div>`;
-      panel.innerHTML = html;
+      document.getElementById("main-panel").innerHTML = html;
 
-      // Update active state
-      document.querySelectorAll('.module').forEach((el, i) => {
-        el.classList.toggle('active', i === index);
-      });
+      document.querySelectorAll('.module').forEach((el,i) => el.classList.toggle('active', i===n));
     }
 
-    function copyCommand(text) {
+    function copy(text) {
       navigator.clipboard.writeText(text);
-      const notif = document.createElement('div');
-      notif.textContent = 'Copied!';
-      notif.style.position = 'fixed';
-      notif.style.bottom = '20px';
-      notif.style.left = '50%';
-      notif.style.transform = 'translateX(-50%)';
-      notif.style.background = '#22d3ee';
-      notif.style.color = 'black';
-      notif.style.padding = '12px 24px';
-      notif.style.borderRadius = '9999px';
-      notif.style.fontWeight = 'bold';
-      document.body.appendChild(notif);
-      setTimeout(() => notif.remove(), 1500);
+      showToast("✅ Copied!");
     }
 
-    function copyAll(index) {
-      const cmds = modules[index].commands.map(c => c.cmd).join('\n');
-      navigator.clipboard.writeText(cmds);
-      alert('✅ All commands copied!');
+    function copyAll(n) {
+      const text = data[n].cmds.join('\n');
+      navigator.clipboard.writeText(text);
+      showToast("✅ All commands copied!");
     }
 
-    // Initialize with first module
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = `position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#22d3ee; color:#000; padding:16px 32px; border-radius:9999px; font-weight:700;`;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 1600);
+    }
+
     window.onload = () => switchModule(0);
   </script>
 </body>
